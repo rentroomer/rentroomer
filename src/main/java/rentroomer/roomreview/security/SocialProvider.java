@@ -3,18 +3,22 @@ package rentroomer.roomreview.security;
 import rentroomer.roomreview.dto.KakaoProperty;
 import rentroomer.roomreview.dto.SocialProperty;
 import rentroomer.roomreview.exceptions.UnsupportedProviderException;
+import rentroomer.roomreview.security.support.KakaoAuthenticationTemplate;
+import rentroomer.roomreview.security.support.SocialAuthenticationTemplate;
 
 import java.util.Arrays;
 
 public enum SocialProvider {
-    KAKAO("https://kapi.kakao.com/v2/user/me", KakaoProperty.class);
+    KAKAO("https://kapi.kakao.com/v2/user/me", KakaoProperty.class, new KakaoAuthenticationTemplate());
 
     private String endPoint;
     private Class<? extends SocialProperty> responseType;
+    private SocialAuthenticationTemplate template;
 
-    SocialProvider(String endPoint, Class<? extends SocialProperty> responseType) {
+    SocialProvider(String endPoint, Class<? extends SocialProperty> responseType, SocialAuthenticationTemplate template) {
         this.endPoint = endPoint;
         this.responseType = responseType;
+        this.template = template;
     }
 
     public static SocialProvider getProviderByName(String provider) throws UnsupportedProviderException{
@@ -27,5 +31,9 @@ public enum SocialProvider {
 
     public Class<? extends SocialProperty> getResponseType() {
         return responseType;
+    }
+
+    public SocialAuthenticationTemplate getTemplate() {
+        return template;
     }
 }
