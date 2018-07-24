@@ -29,6 +29,7 @@ dependencies {
     compile('org.springframework.boot:spring-boot-starter-security')
     compile('org.springframework.boot:spring-boot-starter-web')
     compile('pl.allegro.tech.boot:handlebars-spring-boot-starter:0.3.0')
+    compile group: 'com.auth0', name: 'java-jwt', version: '3.3.0'
     runtime('org.springframework.boot:spring-boot-devtools')
     runtime('com.h2database:h2')
     runtime('mysql:mysql-connector-java')

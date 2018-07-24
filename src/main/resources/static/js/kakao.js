@@ -10,6 +10,22 @@ Kakao.Auth.createLoginButton({
 });
 
 function saveAuthInfo(authObj) {
-    localStorage.setItem("auth", authObj);
+    var accessToken = JSON.parse(authObj);
+    var token = {
+        provider : "KAKAO",
+        token : accessToken.access_token
+    };
+
+    var req = new XMLHttpRequest();
+    req.onreadystatechange = function() {
+        if (req.readyState === 4 && req.status === 200) {
+            // redirect uri 받아서 겟요청.
+        } else {
+            // 실패 처리
+        }
+    };
+    req.open('POST', '/oauth', true);
+    req.setRequestHeader('Content-Type', 'application/json');
+    req.send(JSON.stringify(token));
 }
 
