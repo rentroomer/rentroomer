@@ -3,7 +3,6 @@ package rentroomer.roomreview.security.support;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
-import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import rentroomer.roomreview.dto.SocialProperty;
 import rentroomer.roomreview.security.tokens.PreSocialLoginToken;

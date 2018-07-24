@@ -1,12 +1,8 @@
 package rentroomer.roomreview.domain;
 
-import org.springframework.security.core.GrantedAuthority;
+import rentroomer.roomreview.security.UserRole;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.MappedSuperclass;
-import java.util.Collection;
+import javax.persistence.*;
 
 @MappedSuperclass
 public abstract class Account {
@@ -17,19 +13,27 @@ public abstract class Account {
 
     private String userId;
 
-    private Collection<? extends GrantedAuthority> authorities;
+    @Enumerated(EnumType.STRING)
+    private UserRole userRole;
 
-    public Account(String userId, Collection<? extends GrantedAuthority> authorities) {
+    public Account(String userId, UserRole userRole) {
         this.userId = userId;
-        this.authorities = authorities;
+        this.userRole = userRole;
     }
 
     public Long getId() {
         return id;
     }
 
-    public Account setId(Long id) {
-        this.id = id;
-        return this;
+    public String getUserId() {
+        return userId;
+    }
+
+    public UserRole getUserRole() {
+        return userRole;
+    }
+
+    public String getAuthorityNames() {
+        return userRole.name();
     }
 }

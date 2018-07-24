@@ -21,6 +21,7 @@ function saveAuthInfo(authObj) {
         if (req.readyState === 4 && req.status === 200) {
             // redirect uri 받아서 겟요청.
         } else {
+            console.log('에러');
             // 실패 처리
         }
     };

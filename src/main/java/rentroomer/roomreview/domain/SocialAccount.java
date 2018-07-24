@@ -1,18 +1,19 @@
 package rentroomer.roomreview.domain;
 
-import org.springframework.security.core.GrantedAuthority;
 import rentroomer.roomreview.dto.SocialProperty;
 import rentroomer.roomreview.security.SocialProvider;
+import rentroomer.roomreview.security.UserRole;
 
-import java.util.Collection;
+import javax.persistence.Entity;
 
+@Entity
 public class SocialAccount extends Account {
 
     private String socialId;
 
-    public SocialAccount(SocialProperty property, Collection<? extends GrantedAuthority> authorities, SocialProvider provider) {
-        super(property.getName(), authorities);
-        this.socialId = ""; // property.getSocialID();
+    public SocialAccount(SocialProperty property, UserRole userRole, SocialProvider provider) {
+        super(property.getName(), userRole);
+        this.socialId = ""; // TODO : 수정하기 property.getSocialID();
         // generate
 
     }

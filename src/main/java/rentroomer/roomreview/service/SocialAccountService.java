@@ -7,7 +7,7 @@ import rentroomer.roomreview.domain.SocialAccountRepository;
 import rentroomer.roomreview.dto.SocialProperty;
 import rentroomer.roomreview.security.SocialProvider;
 
-import javax.persistence.EntityNotFoundException;
+import static rentroomer.roomreview.security.UserRole.getBasicRole;
 
 @Service
 public class SocialAccountService {
@@ -21,6 +21,6 @@ public class SocialAccountService {
     }
 
     public SocialAccount create(SocialProperty socialProperty, SocialProvider provider) {
-        return socialAccountRepository.save(new SocialAccount(socialProperty, null, provider));
+        return socialAccountRepository.save(new SocialAccount(socialProperty, getBasicRole(), provider));
     }
 }
