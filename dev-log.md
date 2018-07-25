@@ -6,7 +6,16 @@
 2. 통합 테스트 구현하기  
 
 ### 박진형
+1. JWT를 발급해서 response에 실어주려고 할 때 PostLoginToken에서 꺼내옴 : DTO 역할
+- credencial에 넣었을 때는 eraseCredential이 실행되어서 지워져있어서 null이 됨 : 무슨이유일까? 인증 후라면 credential을 삭제함, 인증 후 객체(생성자로 구분)를 생성한 것이라 credential을 삭제하는 것으로 생각됨
 
+2. 통합테스트를 하지않으면 모든 경우의수에 대해서 하나씩 테스트해야함
+3. 코드를 github에 공유할 때 테스트 키 값이라도 빼고 올리기, 칸만 남겨두고 지워버리기
+4. TestRestTemplate를 Autowired 하지않으면 상대적인 URI를 사용할 수 없음
+5. 쿠키에 setSecure를 설정하면 쿠키 목록에서는 없어짐(자바스크립트 API로 조회할 수 없음) HTTP 통신에서는 사용됨 XSS 공격으로부터는 자유로움
+- 쿠키는 HTTP 통신할 때 자동으로 전달
+- CSRF에 대한 공격 대비는 따로 서버에서 해야함
+  
 ### 박재현
 1. SuccessHandler에서 계속 PostLoginToken에 credential로 넣어둔 TokenDto를 꺼낼 때 null이난다.
 	- PostLoginToken이 생성될 때는 분명 들어갈 때는 잘 들어간다.
