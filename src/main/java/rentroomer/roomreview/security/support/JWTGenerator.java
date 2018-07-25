@@ -6,7 +6,7 @@ import com.auth0.jwt.exceptions.JWTCreationException;
 import rentroomer.roomreview.domain.Account;
 
 public class JWTGenerator {
-    private static final String SIGN_KEY = "test";
+    private static final String SIGN_KEY = "";
     private static final String CLAIM_KEY_AUTHORITY = "Authority";
 
     public static String generate(Account account) throws JWTCreationException {

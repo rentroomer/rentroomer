@@ -7,6 +7,6 @@
 POST http://localhost:8080/oauth
 Content-Type: application/json
 
-{"provider": "KAKAO", "token": "9yVY396JR9F9GXc4wjjKIwdduLWTTihEWw60qwo8BRIAAAFk0AHFiQ"}
+{"provider": "KAKAO", "token": ""}
 
 ###

@@ -22,6 +22,7 @@ function saveAuthInfo(authObj, providerName) {
     req.onreadystatechange = function() {
         if (req.readyState === 4 && req.status === 200) {
             // redirect uri 받아서 겟요청.
+            console.log('성공');
         } else {
             console.log('에러');
         }
