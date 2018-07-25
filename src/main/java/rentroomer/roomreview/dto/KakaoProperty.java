@@ -1,29 +1,32 @@
 package rentroomer.roomreview.dto;
 
+import java.util.Map;
+
 public class KakaoProperty implements SocialProperty {
 
     private Long id;
-    private String nickname;
+    private Map<String, String> properties;
 
     public KakaoProperty() {
     }
 
-    public Long getId() {
-        return id;
+    public KakaoProperty setId(Long id) {
+        this.id = id;
+        return this;
     }
-
-    public KakaoProperty setNickname(String nickname) {
-        this.nickname = nickname;
+    
+    public KakaoProperty setProperties(Map<String, String> properties) {
+        this.properties = properties;
         return this;
     }
 
     @Override
     public String getName() {
-        return nickname;
+        return properties.get("nickname");
     }
 
     @Override
-    public Long getSocialID() {
+    public Long getSocialId() {
         return id;
     }
 }

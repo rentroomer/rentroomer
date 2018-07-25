@@ -16,6 +16,9 @@ public abstract class Account {
     @Enumerated(EnumType.STRING)
     private UserRole userRole;
 
+    public Account() {
+    }
+
     public Account(String userId, UserRole userRole) {
         this.userId = userId;
         this.userRole = userRole;

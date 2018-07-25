@@ -7,12 +7,12 @@ import rentroomer.roomreview.domain.Account;
 
 public class JWTGenerator {
     private static final String SIGN_KEY = "test";
-    private static final String CLAIM_KEY_AUTHORITIES = "Authorities";
+    private static final String CLAIM_KEY_AUTHORITY = "Authority";
 
     public static String generate(Account account) throws JWTCreationException {
         return JWT.create()
                 .withIssuer(account.getUserId())
-                .withClaim(CLAIM_KEY_AUTHORITIES, account.getAuthorityNames())
+                .withClaim(CLAIM_KEY_AUTHORITY, account.getAuthorityNames())
                 .sign(getAlgorithm());
     }
 

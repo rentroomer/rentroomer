@@ -8,6 +8,8 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import rentroomer.roomreview.security.filters.SocialLoginFilter;
 import rentroomer.roomreview.security.providers.SocialLoginProvider;
@@ -20,9 +22,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private SocialLoginProvider socialLoginProvider;
 
+    @Autowired
+    private AuthenticationSuccessHandler successHandler;
+
+    @Autowired
+    private AuthenticationFailureHandler failureHandler;
 
     private SocialLoginFilter createSocialFilter() throws Exception {
-        SocialLoginFilter filter = new SocialLoginFilter("/oauth");
+        SocialLoginFilter filter = new SocialLoginFilter("/oauth", successHandler, failureHandler);
         filter.setAuthenticationManager(super.authenticationManagerBean());
         return filter;
     }

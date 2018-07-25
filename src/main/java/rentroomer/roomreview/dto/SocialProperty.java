@@ -4,5 +4,5 @@ public interface SocialProperty {
 
     String getName();
 
-    Long getSocialID();
+    Long getSocialId();
 }

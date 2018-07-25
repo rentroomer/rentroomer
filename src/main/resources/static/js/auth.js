@@ -1,18 +1,20 @@
+var providers = Object.freeze({"kakao": "KAKAO", "fb": "FACEBOOK"});
+
 Kakao.init('2d93affaab26c2f0d410f1426165fed0');
 Kakao.Auth.createLoginButton({
     container: '#kakao-login-btn',
-    success: function(authObj) {
-        saveAuthInfo(JSON.stringify(authObj));
+    success: function(authObj, providerName) {
+        saveAuthInfo(JSON.stringify(authObj), providers.kakao);
     },
     fail: function(err) {
         alert("로그인 실패");
     }
 });
 
-function saveAuthInfo(authObj) {
+function saveAuthInfo(authObj, providerName) {
     var accessToken = JSON.parse(authObj);
     var token = {
-        provider : "KAKAO",
+        provider : providerName,
         token : accessToken.access_token
     };
 
@@ -22,7 +24,6 @@ function saveAuthInfo(authObj) {
             // redirect uri 받아서 겟요청.
         } else {
             console.log('에러');
-            // 실패 처리
         }
     };
     req.open('POST', '/oauth', true);

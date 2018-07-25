@@ -16,7 +16,7 @@ public class SocialAccountService {
     private SocialAccountRepository socialAccountRepository;
 
     public SocialAccount findBySocialId(SocialProperty socialProperty, SocialProvider provider) {
-        return socialAccountRepository.findBySocialId(socialProperty.getSocialID())
+        return socialAccountRepository.findBySocialId(socialProperty.getSocialId())
                 .orElseGet(() -> create(socialProperty, provider));
     }
 
