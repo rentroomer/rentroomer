@@ -3,7 +3,7 @@ package rentroomer.roomreview.dto;
 import java.util.Map;
 
 public class KakaoProperty implements SocialProperty {
-
+    private static final String PROPERTY_NAME_KEY = "nickname";
     private Long id;
     private Map<String, String> properties;
 
@@ -22,7 +22,7 @@ public class KakaoProperty implements SocialProperty {
 
     @Override
     public String getName() {
-        return properties.get("nickname");
+        return properties.get(PROPERTY_NAME_KEY);
     }
 
     @Override

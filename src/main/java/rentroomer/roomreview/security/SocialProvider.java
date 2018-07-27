@@ -5,6 +5,7 @@ import rentroomer.roomreview.dto.SocialProperty;
 import rentroomer.roomreview.exceptions.UnsupportedProviderException;
 import rentroomer.roomreview.security.support.KakaoAuthenticationTemplate;
 import rentroomer.roomreview.security.support.SocialAuthenticationTemplate;
+import rentroomer.roomreview.security.tokens.PreSocialLoginToken;
 
 import java.util.Arrays;
 
@@ -21,7 +22,7 @@ public enum SocialProvider {
         this.template = template;
     }
 
-    public static SocialProvider getProviderByName(String provider) throws UnsupportedProviderException{
+    public static SocialProvider getProviderByName(String provider) throws UnsupportedProviderException {
         return Arrays.stream(values()).filter(p -> p.name().equals(provider)).findFirst().orElseThrow(() -> new UnsupportedProviderException("지원하지 않는 소셜 공급자 입니다."));
     }
 
@@ -33,7 +34,7 @@ public enum SocialProvider {
         return responseType;
     }
 
-    public SocialAuthenticationTemplate getTemplate() {
-        return template;
+    public SocialProperty getSocialProperty(PreSocialLoginToken preSocialLoginToken) {
+        return template.auth(preSocialLoginToken);
     }
 }

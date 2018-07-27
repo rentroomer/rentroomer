@@ -5,25 +5,30 @@ import rentroomer.roomreview.security.SocialProvider;
 import rentroomer.roomreview.security.UserRole;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 
 @Entity
 public class SocialAccount extends Account {
     private Long socialId;
+
+    @Enumerated(EnumType.STRING)
+    private SocialProvider provider;
 
     public SocialAccount() {
     }
 
     public SocialAccount(SocialProperty property, UserRole userRole, SocialProvider provider) {
         super(property.getName(), userRole);
-        this.socialId = property.getSocialId(); // TODO : provider 합쳐서 등록하기
+        this.socialId = property.getSocialId();
+        this.provider = provider;
     }
 
     public Long getSocialId() {
         return socialId;
     }
 
-    public SocialAccount setSocialId(Long socialId) {
-        this.socialId = socialId;
-        return this;
+    public SocialProvider getProvider() {
+        return provider;
     }
 }

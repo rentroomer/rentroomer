@@ -1,10 +1,11 @@
 package rentroomer.roomreview.domain;
 
 import org.springframework.data.repository.CrudRepository;
+import rentroomer.roomreview.security.SocialProvider;
 
 import java.util.Optional;
 
 public interface SocialAccountRepository extends CrudRepository<SocialAccount, Long> {
 
-    Optional<SocialAccount> findBySocialId(Long id);
+    Optional<SocialAccount> findBySocialIdAndProvider(Long id, SocialProvider provider);
 }

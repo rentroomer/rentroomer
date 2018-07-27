@@ -24,8 +24,7 @@ public class SocialLoginFilter extends AbstractAuthenticationProcessingFilter {
         this.successHandler = successHandler;
         this.failureHandler = failureHandler;
     }
-
-    // TODO : 예외 처리하기
+    
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException, IOException, ServletException {
         SocialInfoDto socialInfoDto = new ObjectMapper().readValue(request.getReader(), SocialInfoDto.class);

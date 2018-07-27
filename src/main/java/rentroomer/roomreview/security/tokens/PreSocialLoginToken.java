@@ -4,7 +4,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import rentroomer.roomreview.dto.SocialInfoDto;
 import rentroomer.roomreview.dto.SocialProperty;
 import rentroomer.roomreview.security.SocialProvider;
-import rentroomer.roomreview.security.support.SocialAuthenticationTemplate;
 
 public class PreSocialLoginToken extends UsernamePasswordAuthenticationToken {
 
@@ -20,10 +19,6 @@ public class PreSocialLoginToken extends UsernamePasswordAuthenticationToken {
         return (SocialProvider) super.getPrincipal();
     }
 
-    public SocialAuthenticationTemplate getTemplate() {
-        return getProvider().getTemplate();
-    }
-
     public String getEndPoint() {
         SocialProvider provider = getProvider();
         return provider.getEndPoint();
@@ -36,5 +31,10 @@ public class PreSocialLoginToken extends UsernamePasswordAuthenticationToken {
 
     public String getToken() {
         return String.valueOf(super.getCredentials());
+    }
+
+    public SocialProperty getSocialProperty() {
+        SocialProvider provider = getProvider();
+        return provider.getSocialProperty(this);
     }
 }
