@@ -8,13 +8,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertThat;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -30,9 +29,17 @@ public class SocialLoginAcceptanceTest {
     @Test
     public void oauthLogin() {
         ResponseEntity<Void> response = testRestTemplate.postForEntity("/oauth", createRequest(), Void.class);
-        logger.debug("HEADERS: {}", response.getHeaders().toString());
+
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
         assertNotNull(response.getHeaders().get("Set-Cookie").get(0));
+        assertThat(response.getHeaders().getLocation().getPath(), is("/"));
+
+        logger.debug("HEADERS: {}", response.getHeaders().toString());
         logger.debug("Set-Cookie: {}", response.getHeaders().get("Set-Cookie").get(0));
+
+        String location = response.getHeaders().getLocation().getPath();
+        ResponseEntity<String> homepage = testRestTemplate.getForEntity(location, String.class);
+        logger.debug(homepage.getBody());
     }
 
     private HttpEntity<String> createRequest() {

@@ -1,7 +1,5 @@
 package rentroomer.roomreview.security.handlers;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
@@ -19,7 +17,6 @@ import java.io.IOException;
 
 @Component
 public class LoginSuccessHandler implements AuthenticationSuccessHandler {
-    private static final Logger logger = LoggerFactory.getLogger(LoginSuccessHandler.class);
 
     @Autowired
     private JWTGenerator generator;
@@ -28,6 +25,7 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         PostLoginToken token = (PostLoginToken) authentication;
         response.setStatus(HttpStatus.OK.value());
+        response.setHeader("Location", "/");
 
         Account account = token.getAccount();
         sendJWT(response, account);

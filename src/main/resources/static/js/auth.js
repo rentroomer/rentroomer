@@ -21,10 +21,7 @@ function saveAuthInfo(authObj, providerName) {
     var req = new XMLHttpRequest();
     req.onreadystatechange = function() {
         if (req.readyState === 4 && req.status === 200) {
-            // redirect uri 받아서 겟요청.
-            console.log('성공');
-        } else {
-            console.log('에러');
+            location.replace(req.getResponseHeader("Location"));
         }
     };
     req.open('POST', '/oauth', true);
