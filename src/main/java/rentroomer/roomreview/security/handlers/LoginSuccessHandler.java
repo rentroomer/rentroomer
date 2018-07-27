@@ -17,6 +17,7 @@ import java.io.IOException;
 
 @Component
 public class LoginSuccessHandler implements AuthenticationSuccessHandler {
+    public static final String COOKIE_NAME_AUTH = "auth";
 
     @Autowired
     private JWTGenerator generator;
@@ -32,7 +33,7 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
     }
 
     private void sendJWT(HttpServletResponse response, Account account) {
-        Cookie cookie = new Cookie("auth", account.generateJWT(generator));
+        Cookie cookie = new Cookie(COOKIE_NAME_AUTH, account.generateJWT(generator));
         cookie.setSecure(true);
         response.addCookie(cookie);
     }

@@ -11,8 +11,12 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import rentroomer.roomreview.security.filters.JwtAuthenticationFilter;
 import rentroomer.roomreview.security.filters.SocialLoginFilter;
 import rentroomer.roomreview.security.providers.SocialLoginProvider;
+import rentroomer.roomreview.security.support.JwtSkipMatcher;
+
+import java.util.Arrays;
 
 @Configuration
 @EnableWebSecurity
@@ -28,8 +32,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private AuthenticationFailureHandler failureHandler;
 
+
     private SocialLoginFilter createSocialFilter() throws Exception {
         SocialLoginFilter filter = new SocialLoginFilter("/oauth", successHandler, failureHandler);
+        filter.setAuthenticationManager(super.authenticationManagerBean());
+        return filter;
+    }
+
+    private JwtAuthenticationFilter createJwtAuthenticationFilter() throws Exception {
+        JwtSkipMatcher skipMatcher = new JwtSkipMatcher("**", Arrays.asList("/login", "/oauth", "/h2-console", "/js/**", "/css/**"));
+        JwtAuthenticationFilter filter = new JwtAuthenticationFilter(skipMatcher, successHandler, failureHandler);
         filter.setAuthenticationManager(super.authenticationManagerBean());
         return filter;
     }
@@ -40,6 +52,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable();
         http.headers().frameOptions().disable();
         http.addFilterBefore(createSocialFilter(), UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(createJwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
     }
 
     @Override
