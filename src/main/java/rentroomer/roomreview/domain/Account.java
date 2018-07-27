@@ -40,8 +40,8 @@ public abstract class Account {
         return userRole;
     }
 
-    public String generateJWT() {
-        return JWTGenerator.generate(userId, userRole.getAuthority());
+    public String generateJWT(JWTGenerator generator) {
+        return generator.generate(userId, userRole.getAuthority());
     }
 
     public Collection<? extends GrantedAuthority> getAuthorityNames() {
