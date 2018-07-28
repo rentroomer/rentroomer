@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -40,7 +41,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     private JwtAuthenticationFilter createJwtAuthenticationFilter() throws Exception {
-        JwtSkipMatcher skipMatcher = new JwtSkipMatcher("**", Arrays.asList("/login", "/oauth", "/h2-console", "/js/**", "/css/**"));
+        JwtSkipMatcher skipMatcher = new JwtSkipMatcher("/**", Arrays.asList("/", "/login", "/oauth"));//, "/h2-console/**", "/js/**", "/css/**"));
         JwtAuthenticationFilter filter = new JwtAuthenticationFilter(skipMatcher, successHandler, failureHandler);
         filter.setAuthenticationManager(super.authenticationManagerBean());
         return filter;
@@ -58,5 +59,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.authenticationProvider(socialLoginProvider);
+    }
+
+    @Override
+    public void configure(WebSecurity web) throws Exception {
+        web.ignoring()
+                .antMatchers("/h2-console/**")
+                .antMatchers("/js/**")
+                .antMatchers("/css/**");
     }
 }
