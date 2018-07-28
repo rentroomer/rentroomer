@@ -41,7 +41,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     private JwtAuthenticationFilter createJwtAuthenticationFilter() throws Exception {
-        JwtSkipMatcher skipMatcher = new JwtSkipMatcher("/**", Arrays.asList("/", "/login", "/oauth"));//, "/h2-console/**", "/js/**", "/css/**"));
+        JwtSkipMatcher skipMatcher = new JwtSkipMatcher("/**", Arrays.asList("/", "/login", "/oauth"));
         JwtAuthenticationFilter filter = new JwtAuthenticationFilter(skipMatcher, successHandler, failureHandler);
         filter.setAuthenticationManager(super.authenticationManagerBean());
         return filter;
