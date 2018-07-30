@@ -20,6 +20,7 @@ public class LoginFailureHandler implements AuthenticationFailureHandler {
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
         log.error("auth error : {}", exception.getMessage());
+
         response.setStatus(HttpStatus.FOUND.value());
         response.setHeader("Location", "/login");
         response.setContentType(MediaType.TEXT_HTML.getType());

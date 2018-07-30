@@ -12,10 +12,10 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import rentroomer.roomreview.security.filters.JwtAuthenticationFilter;
+import rentroomer.roomreview.security.filters.JWTAuthenticationFilter;
 import rentroomer.roomreview.security.filters.SocialLoginFilter;
 import rentroomer.roomreview.security.providers.SocialLoginProvider;
-import rentroomer.roomreview.security.support.JwtSkipMatcher;
+import rentroomer.roomreview.security.support.JWTSkipMatcher;
 
 import java.util.Arrays;
 
@@ -40,9 +40,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return filter;
     }
 
-    private JwtAuthenticationFilter createJwtAuthenticationFilter() throws Exception {
-        JwtSkipMatcher skipMatcher = new JwtSkipMatcher("/**", Arrays.asList("/", "/login", "/oauth"));
-        JwtAuthenticationFilter filter = new JwtAuthenticationFilter(skipMatcher, successHandler, failureHandler);
+    private JWTAuthenticationFilter createJwtAuthenticationFilter() throws Exception {
+        JWTSkipMatcher skipMatcher = new JWTSkipMatcher("/**", Arrays.asList("/", "/login", "/oauth"));
+        JWTAuthenticationFilter filter = new JWTAuthenticationFilter(skipMatcher, successHandler, failureHandler);
         filter.setAuthenticationManager(super.authenticationManagerBean());
         return filter;
     }

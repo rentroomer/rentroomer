@@ -2,7 +2,6 @@ package rentroomer.roomreview.domain;
 
 import org.springframework.security.core.GrantedAuthority;
 import rentroomer.roomreview.security.UserRole;
-import rentroomer.roomreview.security.support.JWTGenerator;
 
 import javax.persistence.*;
 import java.util.Collection;
@@ -40,11 +39,13 @@ public abstract class Account {
         return userRole;
     }
 
-    public String generateJWT(JWTGenerator generator) {
-        return generator.generate(userId, userRole.getAuthority());
+    public String getAuthorityName() {
+        return userRole.name();
     }
 
     public Collection<? extends GrantedAuthority> getAuthorityNames() {
         return Collections.singletonList(userRole);
     }
+
+    public abstract boolean isSocialAccount();
 }

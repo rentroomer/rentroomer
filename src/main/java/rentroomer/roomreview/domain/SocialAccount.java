@@ -31,4 +31,9 @@ public class SocialAccount extends Account {
     public SocialProvider getProvider() {
         return provider;
     }
+
+    @Override
+    public boolean isSocialAccount() {
+        return true;
+    }
 }

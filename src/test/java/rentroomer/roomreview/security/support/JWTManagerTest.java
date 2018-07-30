@@ -5,13 +5,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import rentroomer.roomreview.security.UserRole;
 
-public class JWTGeneratorTest {
-    private static final Logger log = LoggerFactory.getLogger(JWTGeneratorTest.class);
+public class JWTManagerTest {
+    private static final Logger log = LoggerFactory.getLogger(JWTManagerTest.class);
 
     @Test
     public void generate() {
-        JWTGenerator jwtGenerator = new JWTGenerator("testKey");
-        String jwt = jwtGenerator.generate("javajigi", UserRole.getBasicRole().getAuthority());
+        JWTManager jwtManager = new JWTManager("testKey");
+        String jwt = jwtManager.generate("javajigi", UserRole.getBasicRole().getAuthority());
         log.debug("current : {}", System.currentTimeMillis());
         log.debug("jwt : {}", jwt);
     }
