@@ -5,7 +5,7 @@ import rentroomer.roomreview.security.SocialProvider;
 
 import java.util.Optional;
 
-public interface SocialAccountRepository extends CrudRepository<SocialAccount, Long> {
+public interface AccountRepository extends CrudRepository<Account, Long> {
 
-    Optional<SocialAccount> findBySocialIdAndProvider(Long id, SocialProvider provider);
+    Optional<Account> findBySocialIdAndSocialProvider(Long socialId, SocialProvider provider);
 }

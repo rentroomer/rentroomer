@@ -5,8 +5,8 @@ import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Component;
-import rentroomer.roomreview.domain.SocialAccount;
-import rentroomer.roomreview.domain.SocialAccountRepository;
+import rentroomer.roomreview.domain.Account;
+import rentroomer.roomreview.domain.AccountRepository;
 import rentroomer.roomreview.dto.SocialProperty;
 import rentroomer.roomreview.security.tokens.PostLoginToken;
 import rentroomer.roomreview.security.tokens.PreSocialLoginToken;
@@ -17,14 +17,15 @@ import static rentroomer.roomreview.security.UserRole.getBasicRole;
 public class SocialLoginProvider implements AuthenticationProvider {
 
     @Autowired
-    private SocialAccountRepository socialAccountRepository;
+    private AccountRepository accountRepository;
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         PreSocialLoginToken preAuthToken = (PreSocialLoginToken) authentication;
         SocialProperty socialProperty = preAuthToken.getSocialProperty();
-        SocialAccount account = socialAccountRepository.findBySocialIdAndProvider(socialProperty.getSocialId(), preAuthToken.getProvider())
-                .orElseGet(() -> socialAccountRepository.save(new SocialAccount(socialProperty, getBasicRole(), preAuthToken.getProvider())));
+
+        Account account = accountRepository.findBySocialIdAndSocialProvider(socialProperty.getSocialId(), preAuthToken.getProvider())
+                .orElseGet(() -> accountRepository.save(new Account(socialProperty.getName(), getBasicRole(), preAuthToken.getProvider(), socialProperty.getSocialId())));
 
         return PostLoginToken.create(account);
     }

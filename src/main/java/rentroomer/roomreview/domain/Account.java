@@ -1,14 +1,15 @@
 package rentroomer.roomreview.domain;
 
 import org.springframework.security.core.GrantedAuthority;
+import rentroomer.roomreview.security.SocialProvider;
 import rentroomer.roomreview.security.UserRole;
 
 import javax.persistence.*;
 import java.util.Collection;
 import java.util.Collections;
 
-@MappedSuperclass
-public abstract class Account {
+@Entity
+public class Account {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,10 +20,23 @@ public abstract class Account {
     @Enumerated(EnumType.STRING)
     private UserRole userRole;
 
+    @Enumerated
+    private SocialProvider socialProvider;
+
+    private Long socialId;
+
     public Account() {
     }
 
-    public Account(String userId, UserRole userRole) {
+    public Account(String name, UserRole userRole, SocialProvider provider, Long socialId) {
+        this.userId = name;
+        this.userRole = userRole;
+        this.socialProvider = provider;
+        this.socialId = socialId;
+    }
+
+    public Account(long id, String userId, UserRole userRole) {
+        this.id = id;
         this.userId = userId;
         this.userRole = userRole;
     }
@@ -46,6 +60,4 @@ public abstract class Account {
     public Collection<? extends GrantedAuthority> getAuthorityNames() {
         return Collections.singletonList(userRole);
     }
-
-    public abstract boolean isSocialAccount();
 }

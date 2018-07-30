@@ -10,10 +10,12 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
-import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import rentroomer.roomreview.security.filters.JWTAuthenticationFilter;
 import rentroomer.roomreview.security.filters.SocialLoginFilter;
+import rentroomer.roomreview.security.handlers.JWTAuthenticationSuccessHandler;
+import rentroomer.roomreview.security.handlers.SocialLoginSuccessHandler;
+import rentroomer.roomreview.security.providers.JWTAuthenticationProvider;
 import rentroomer.roomreview.security.providers.SocialLoginProvider;
 import rentroomer.roomreview.security.support.JWTSkipMatcher;
 
@@ -28,21 +30,26 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private SocialLoginProvider socialLoginProvider;
 
     @Autowired
-    private AuthenticationSuccessHandler successHandler;
+    private JWTAuthenticationProvider jwtAuthenticationProvider;
+
+    @Autowired
+    private SocialLoginSuccessHandler socialLoginSuccessHandler;
 
     @Autowired
     private AuthenticationFailureHandler failureHandler;
 
+    @Autowired
+    private JWTAuthenticationSuccessHandler jwtAuthenticationSuccessHandler;
 
     private SocialLoginFilter createSocialFilter() throws Exception {
-        SocialLoginFilter filter = new SocialLoginFilter("/oauth", successHandler, failureHandler);
+        SocialLoginFilter filter = new SocialLoginFilter("/oauth", socialLoginSuccessHandler, failureHandler);
         filter.setAuthenticationManager(super.authenticationManagerBean());
         return filter;
     }
 
     private JWTAuthenticationFilter createJwtAuthenticationFilter() throws Exception {
-        JWTSkipMatcher skipMatcher = new JWTSkipMatcher("/**", Arrays.asList("/", "/login", "/oauth"));
-        JWTAuthenticationFilter filter = new JWTAuthenticationFilter(skipMatcher, successHandler, failureHandler);
+        JWTSkipMatcher skipMatcher = new JWTSkipMatcher("/**", Arrays.asList("/login", "/oauth"));
+        JWTAuthenticationFilter filter = new JWTAuthenticationFilter(skipMatcher, jwtAuthenticationSuccessHandler, failureHandler);
         filter.setAuthenticationManager(super.authenticationManagerBean());
         return filter;
     }
@@ -59,6 +66,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.authenticationProvider(socialLoginProvider);
+        auth.authenticationProvider(jwtAuthenticationProvider);
     }
 
     @Override

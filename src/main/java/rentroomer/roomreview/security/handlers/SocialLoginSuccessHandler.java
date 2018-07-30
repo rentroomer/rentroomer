@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @Component
-public class LoginSuccessHandler implements AuthenticationSuccessHandler {
+public class SocialLoginSuccessHandler implements AuthenticationSuccessHandler {
     public static final String COOKIE_NAME_AUTH = "auth";
 
     @Autowired
@@ -34,7 +34,7 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
 
     private void sendJWT(HttpServletResponse response, Account account) {
         Cookie cookie = new Cookie(COOKIE_NAME_AUTH, generator.generate(account));
-        cookie.setSecure(true);
+        cookie.setHttpOnly(true);
         response.addCookie(cookie);
     }
 }

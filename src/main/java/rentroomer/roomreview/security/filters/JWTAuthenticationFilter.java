@@ -1,5 +1,7 @@
 package rentroomer.roomreview.security.filters;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
@@ -17,9 +19,10 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Objects;
 
-import static rentroomer.roomreview.security.handlers.LoginSuccessHandler.COOKIE_NAME_AUTH;
+import static rentroomer.roomreview.security.handlers.SocialLoginSuccessHandler.COOKIE_NAME_AUTH;
 
 public class JWTAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
+    private static final Logger logger = LoggerFactory.getLogger(JWTAuthenticationFilter.class);
     private AuthenticationSuccessHandler successHandler;
     private AuthenticationFailureHandler failureHandler;
 
@@ -33,9 +36,9 @@ public class JWTAuthenticationFilter extends AbstractAuthenticationProcessingFil
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException, IOException, ServletException {
         /* TODO : 깔끔하게 만들기 */
         if (Objects.isNull(request.getCookies())) {
+            logger.debug("NO COOKIES");
             throw new JWTNotFoundException("로그인한 사용자가 아닙니다");
         }
-
 
 
         PreJWTLoginToken preAuthToken = Arrays.stream(request.getCookies())
