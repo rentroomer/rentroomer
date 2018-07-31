@@ -14,7 +14,7 @@ public class PostLoginToken extends UsernamePasswordAuthenticationToken {
         super(principal, credentials, authorities);
     }
 
-    public static PostLoginToken create(Account authAccount) throws AuthenticationException {
+    public static PostLoginToken fromAccount(Account authAccount) throws AuthenticationException {
         return new PostLoginToken(authAccount, UUID.randomUUID().toString(), authAccount.getAuthorityNames());
     }
 

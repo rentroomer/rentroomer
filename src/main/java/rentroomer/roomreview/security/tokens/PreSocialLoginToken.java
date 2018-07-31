@@ -3,11 +3,11 @@ package rentroomer.roomreview.security.tokens;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import rentroomer.roomreview.dto.SocialInfoDto;
 import rentroomer.roomreview.dto.SocialProperty;
-import rentroomer.roomreview.security.SocialProvider;
+import rentroomer.roomreview.security.OAuthProviderInfo;
 
 public class PreSocialLoginToken extends UsernamePasswordAuthenticationToken {
 
-    private PreSocialLoginToken(SocialProvider provider, String token) {
+    private PreSocialLoginToken(OAuthProviderInfo provider, String token) {
         super(provider, token);
     }
 
@@ -15,17 +15,17 @@ public class PreSocialLoginToken extends UsernamePasswordAuthenticationToken {
         return new PreSocialLoginToken(dto.getProvider(), dto.getToken());
     }
 
-    public SocialProvider getProvider() {
-        return (SocialProvider) super.getPrincipal();
+    public OAuthProviderInfo getProvider() {
+        return (OAuthProviderInfo) super.getPrincipal();
     }
 
     public String getEndPoint() {
-        SocialProvider provider = getProvider();
+        OAuthProviderInfo provider = getProvider();
         return provider.getEndPoint();
     }
 
     public Class<? extends SocialProperty> getResponseType() {
-        SocialProvider provider = getProvider();
+        OAuthProviderInfo provider = getProvider();
         return provider.getResponseType();
     }
 
@@ -34,7 +34,7 @@ public class PreSocialLoginToken extends UsernamePasswordAuthenticationToken {
     }
 
     public SocialProperty getSocialProperty() {
-        SocialProvider provider = getProvider();
+        OAuthProviderInfo provider = getProvider();
         return provider.getSocialProperty(this);
     }
 }

@@ -36,10 +36,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private SocialLoginSuccessHandler socialLoginSuccessHandler;
 
     @Autowired
-    private AuthenticationFailureHandler failureHandler;
+    private JWTAuthenticationSuccessHandler jwtAuthenticationSuccessHandler;
 
     @Autowired
-    private JWTAuthenticationSuccessHandler jwtAuthenticationSuccessHandler;
+    private AuthenticationFailureHandler failureHandler;
 
     private SocialLoginFilter createSocialFilter() throws Exception {
         SocialLoginFilter filter = new SocialLoginFilter("/oauth", socialLoginSuccessHandler, failureHandler);
@@ -74,6 +74,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         web.ignoring()
                 .antMatchers("/h2-console/**")
                 .antMatchers("/js/**")
-                .antMatchers("/css/**");
+                .antMatchers("/css/**")
+                .antMatchers("/favicon.ico");
     }
 }

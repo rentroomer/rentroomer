@@ -20,7 +20,7 @@ public class JWTAuthenticationProvider implements AuthenticationProvider {
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         PreJWTLoginToken preAuthToken = (PreJWTLoginToken) authentication;
         Account account = jwtManager.decode(preAuthToken.getTokenValue());
-        return PostLoginToken.create(account);
+        return PostLoginToken.fromAccount(account);
     }
 
     @Override

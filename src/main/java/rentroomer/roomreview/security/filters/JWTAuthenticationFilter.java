@@ -1,7 +1,5 @@
 package rentroomer.roomreview.security.filters;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
@@ -17,12 +15,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.Objects;
+import java.util.Optional;
 
 import static rentroomer.roomreview.security.handlers.SocialLoginSuccessHandler.COOKIE_NAME_AUTH;
 
 public class JWTAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
-    private static final Logger logger = LoggerFactory.getLogger(JWTAuthenticationFilter.class);
     private AuthenticationSuccessHandler successHandler;
     private AuthenticationFailureHandler failureHandler;
 
@@ -34,20 +31,18 @@ public class JWTAuthenticationFilter extends AbstractAuthenticationProcessingFil
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException, IOException, ServletException {
-        /* TODO : 깔끔하게 만들기 */
-        if (Objects.isNull(request.getCookies())) {
-            logger.debug("NO COOKIES");
-            throw new JWTNotFoundException("로그인한 사용자가 아닙니다");
-        }
-
-
-        PreJWTLoginToken preAuthToken = Arrays.stream(request.getCookies())
+        PreJWTLoginToken preAuthToken = Arrays.stream(Optional.ofNullable(request.getCookies())
+                .orElseThrow(this::notLogin))
                 .filter(c -> c.getName().equals(COOKIE_NAME_AUTH))
                 .findFirst()
                 .map(PreJWTLoginToken::fromCookie)
-                .orElseThrow(() -> new JWTNotFoundException("로그인한 사용자가 아닙니다"));
+                .orElseThrow(this::notLogin);
 
         return super.getAuthenticationManager().authenticate(preAuthToken);
+    }
+
+    private AuthenticationException notLogin() {
+        return new JWTNotFoundException("로그인한 사용자가 아닙니다");
     }
 
     @Override

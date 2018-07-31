@@ -1,7 +1,7 @@
 package rentroomer.roomreview.domain;
 
 import org.springframework.security.core.GrantedAuthority;
-import rentroomer.roomreview.security.SocialProvider;
+import rentroomer.roomreview.security.OAuthProviderInfo;
 import rentroomer.roomreview.security.UserRole;
 
 import javax.persistence.*;
@@ -21,17 +21,17 @@ public class Account {
     private UserRole userRole;
 
     @Enumerated
-    private SocialProvider socialProvider;
+    private OAuthProviderInfo OAuthProviderInfo;
 
     private Long socialId;
 
     public Account() {
     }
 
-    public Account(String name, UserRole userRole, SocialProvider provider, Long socialId) {
+    public Account(String name, UserRole userRole, OAuthProviderInfo provider, Long socialId) {
         this.userId = name;
         this.userRole = userRole;
-        this.socialProvider = provider;
+        this.OAuthProviderInfo = provider;
         this.socialId = socialId;
     }
 

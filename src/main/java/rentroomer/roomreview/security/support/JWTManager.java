@@ -20,6 +20,10 @@ import static rentroomer.roomreview.security.support.ExpireTime.getExpirationDat
 
 @Component
 public class JWTManager {
+    private static final String ISSUER_NAME = "rent-roomer";
+    private static final String CLAIM_KEY_ID = "id";
+    private static final String CLAIM_KEY_USER_ID = "userId";
+    private static final String CLAIM_KEY_AUTHORITY = "authority";
 
     private String signingKey;
 
@@ -27,13 +31,7 @@ public class JWTManager {
         this.signingKey = signingKey;
     }
 
-    private static final String ISSUER_NAME = "rent-roomer";
-    private static final String CLAIM_KEY_ID = "id";
-    private static final String CLAIM_KEY_USER_ID = "userId";
-    private static final String CLAIM_KEY_AUTHORITY = "authority";
-
     public String generate(Account account) throws JWTCreationException {
-
         return JWT.create()
                 .withIssuer(ISSUER_NAME)
                 .withExpiresAt(getExpirationDate(THREE_HOURS))
@@ -53,11 +51,9 @@ public class JWTManager {
                     .verify(encodedToken);
 
             checkExpire(decodedJWT);
-
             Long id = decodedJWT.getClaim(CLAIM_KEY_ID).asLong();
             String userId = decodedJWT.getClaim(CLAIM_KEY_USER_ID).asString();
             String authority = decodedJWT.getClaim(CLAIM_KEY_AUTHORITY).asString();
-
             return new Account(id, userId, UserRole.getRole(authority));
         } catch (JWTVerificationException e) {
             throw new JWTVerificationFailureException("JWT 위조함");

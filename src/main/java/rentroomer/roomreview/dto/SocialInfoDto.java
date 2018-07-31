@@ -1,22 +1,22 @@
 package rentroomer.roomreview.dto;
 
 import rentroomer.roomreview.exceptions.UnsupportedProviderException;
-import rentroomer.roomreview.security.SocialProvider;
+import rentroomer.roomreview.security.OAuthProviderInfo;
 
 public class SocialInfoDto {
 
-    private SocialProvider provider;
+    private OAuthProviderInfo provider;
     private String token;
 
     public SocialInfoDto() {
     }
 
-    public SocialProvider getProvider() {
+    public OAuthProviderInfo getProvider() {
         return provider;
     }
 
     public SocialInfoDto setProvider(String provider) throws UnsupportedProviderException {
-        this.provider = SocialProvider.getProviderByName(provider);
+        this.provider = OAuthProviderInfo.getProviderByName(provider);
         return this;
     }
 

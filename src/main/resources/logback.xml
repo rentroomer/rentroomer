@@ -7,7 +7,7 @@
         </layout>
     </appender>
 
-    <logger name="rentroomer.roomreview" level="DEBUG" />
+    <logger name="rentroomer.roomreview" level="ERROR" />
 
     <root level="INFO">
         <appender-ref ref="STDOUT" />

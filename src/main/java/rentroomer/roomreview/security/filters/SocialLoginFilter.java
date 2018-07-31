@@ -1,14 +1,13 @@
 package rentroomer.roomreview.security.filters;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import rentroomer.roomreview.dto.SocialInfoDto;
+import rentroomer.roomreview.exceptions.JsonConversionFailureException;
 import rentroomer.roomreview.security.tokens.PreSocialLoginToken;
 
 import javax.servlet.FilterChain;
@@ -26,10 +25,15 @@ public class SocialLoginFilter extends AbstractAuthenticationProcessingFilter {
         this.successHandler = successHandler;
         this.failureHandler = failureHandler;
     }
-    
+
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException, IOException, ServletException {
-        SocialInfoDto socialInfoDto = new ObjectMapper().readValue(request.getReader(), SocialInfoDto.class);
+        SocialInfoDto socialInfoDto = null;
+        try {
+            socialInfoDto = new ObjectMapper().readValue(request.getReader(), SocialInfoDto.class);
+        } catch (Exception e) {
+            throw new JsonConversionFailureException("인증 정보가 올바르지 않습니다.");
+        }
         PreSocialLoginToken token = PreSocialLoginToken.fromSocialInfoDto(socialInfoDto);
         return super.getAuthenticationManager().authenticate(token);
     }
