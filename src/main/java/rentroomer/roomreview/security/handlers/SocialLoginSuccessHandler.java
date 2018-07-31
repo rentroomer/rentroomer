@@ -6,6 +6,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 import rentroomer.roomreview.domain.Account;
+import rentroomer.roomreview.security.support.JWTCookieManager;
 import rentroomer.roomreview.security.support.JWTManager;
 import rentroomer.roomreview.security.tokens.PostLoginToken;
 
@@ -17,13 +18,12 @@ import java.io.IOException;
 
 @Component
 public class SocialLoginSuccessHandler implements AuthenticationSuccessHandler {
-    public static final String COOKIE_NAME_AUTH = "auth";
 
     @Autowired
     private JWTManager generator;
 
     @Autowired
-    private CookieFactory factory;
+    private JWTCookieManager jwtCookieManager;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
@@ -32,12 +32,6 @@ public class SocialLoginSuccessHandler implements AuthenticationSuccessHandler {
         response.setHeader("Location", "/");
 
         Account account = token.getAccount();
-        sendJWT(response, account);
-    }
-
-    private void sendJWT(HttpServletResponse response, Account account) {
-        Cookie cookie = new Cookie(COOKIE_NAME_AUTH, generator.generate(account));
-        cookie.setHttpOnly(true);
-        response.addCookie(cookie);
+        jwtCookieManager.setJWTCookie(response, generator.generate(account));
     }
 }

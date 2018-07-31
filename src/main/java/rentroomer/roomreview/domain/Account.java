@@ -21,17 +21,17 @@ public class Account {
     private UserRole userRole;
 
     @Enumerated
-    private OAuthProviderInfo OAuthProviderInfo;
+    private OAuthProviderInfo providerInfo;
 
     private Long socialId;
 
     public Account() {
     }
 
-    public Account(String name, UserRole userRole, OAuthProviderInfo provider, Long socialId) {
+    public Account(String name, UserRole userRole, OAuthProviderInfo providerInfo, Long socialId) {
         this.userId = name;
         this.userRole = userRole;
-        this.OAuthProviderInfo = provider;
+        this.providerInfo = providerInfo;
         this.socialId = socialId;
     }
 

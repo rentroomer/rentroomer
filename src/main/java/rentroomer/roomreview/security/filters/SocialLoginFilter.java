@@ -28,14 +28,13 @@ public class SocialLoginFilter extends AbstractAuthenticationProcessingFilter {
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException, IOException, ServletException {
-        SocialInfoDto socialInfoDto = null;
         try {
-            socialInfoDto = new ObjectMapper().readValue(request.getReader(), SocialInfoDto.class);
+            SocialInfoDto socialInfoDto = new ObjectMapper().readValue(request.getReader(), SocialInfoDto.class);
+            PreSocialLoginToken token = PreSocialLoginToken.fromSocialInfoDto(socialInfoDto);
+            return super.getAuthenticationManager().authenticate(token);
         } catch (Exception e) {
             throw new JsonConversionFailureException("인증 정보가 올바르지 않습니다.");
         }
-        PreSocialLoginToken token = PreSocialLoginToken.fromSocialInfoDto(socialInfoDto);
-        return super.getAuthenticationManager().authenticate(token);
     }
 
     @Override

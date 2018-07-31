@@ -7,6 +7,7 @@ import org.springframework.security.web.authentication.AuthenticationFailureHand
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 import rentroomer.roomreview.exceptions.JWTNotFoundException;
+import rentroomer.roomreview.security.support.JWTCookieManager;
 import rentroomer.roomreview.security.tokens.PreJWTLoginToken;
 
 import javax.servlet.FilterChain;
@@ -14,35 +15,28 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.Optional;
 
-import static rentroomer.roomreview.security.handlers.SocialLoginSuccessHandler.COOKIE_NAME_AUTH;
 
 public class JWTAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
+
     private AuthenticationSuccessHandler successHandler;
     private AuthenticationFailureHandler failureHandler;
+    private JWTCookieManager cookieManager;
 
-    public JWTAuthenticationFilter(RequestMatcher matcher, AuthenticationSuccessHandler successHandler, AuthenticationFailureHandler failureHandler) {
+    public JWTAuthenticationFilter(RequestMatcher matcher, AuthenticationSuccessHandler successHandler, AuthenticationFailureHandler failureHandler, JWTCookieManager cookieManager) {
         super(matcher);
         this.successHandler = successHandler;
         this.failureHandler = failureHandler;
+        this.cookieManager = cookieManager;
     }
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException, IOException, ServletException {
-        PreJWTLoginToken preAuthToken = Arrays.stream(Optional.ofNullable(request.getCookies())
-                .orElseThrow(this::notLogin))
-                .filter(c -> c.getName().equals(COOKIE_NAME_AUTH))
-                .findFirst()
-                .map(PreJWTLoginToken::fromCookie)
-                .orElseThrow(this::notLogin);
-
+        if (!cookieManager.isExist(request)) {
+            throw new JWTNotFoundException("쿠키 없음");
+        }
+        PreJWTLoginToken preAuthToken = PreJWTLoginToken.fromCookie(cookieManager.getCookie(request));
         return super.getAuthenticationManager().authenticate(preAuthToken);
-    }
-
-    private AuthenticationException notLogin() {
-        return new JWTNotFoundException("로그인한 사용자가 아닙니다");
     }
 
     @Override

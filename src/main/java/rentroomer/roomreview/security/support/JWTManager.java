@@ -51,6 +51,7 @@ public class JWTManager {
                     .verify(encodedToken);
 
             checkJWTExpiration(decodedJWT);
+
             Long id = decodedJWT.getClaim(CLAIM_KEY_ID).asLong();
             String userId = decodedJWT.getClaim(CLAIM_KEY_USER_ID).asString();
             String authority = decodedJWT.getClaim(CLAIM_KEY_AUTHORITY).asString();
@@ -66,4 +67,5 @@ public class JWTManager {
             throw new JWTExpiredException("기간 만료됨");
         }
     }
+
 }
