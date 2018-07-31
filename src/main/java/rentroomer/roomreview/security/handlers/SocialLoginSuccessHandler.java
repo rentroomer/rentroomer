@@ -22,6 +22,9 @@ public class SocialLoginSuccessHandler implements AuthenticationSuccessHandler {
     @Autowired
     private JWTManager generator;
 
+    @Autowired
+    private CookieFactory factory;
+
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         PostLoginToken token = (PostLoginToken) authentication;

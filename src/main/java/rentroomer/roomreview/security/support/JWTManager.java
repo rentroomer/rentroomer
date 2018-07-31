@@ -50,7 +50,7 @@ public class JWTManager {
             DecodedJWT decodedJWT = JWT.require(getAlgorithm()).build()
                     .verify(encodedToken);
 
-            checkExpire(decodedJWT);
+            checkJWTExpiration(decodedJWT);
             Long id = decodedJWT.getClaim(CLAIM_KEY_ID).asLong();
             String userId = decodedJWT.getClaim(CLAIM_KEY_USER_ID).asString();
             String authority = decodedJWT.getClaim(CLAIM_KEY_AUTHORITY).asString();
@@ -60,7 +60,7 @@ public class JWTManager {
         }
     }
 
-    private void checkExpire(DecodedJWT decodedJWT) throws AuthenticationException {
+    private void checkJWTExpiration(DecodedJWT decodedJWT) throws AuthenticationException {
         Date date = decodedJWT.getExpiresAt();
         if (date.before(new Date())) {
             throw new JWTExpiredException("기간 만료됨");
