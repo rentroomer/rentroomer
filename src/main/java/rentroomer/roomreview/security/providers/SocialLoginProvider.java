@@ -24,9 +24,8 @@ public class SocialLoginProvider implements AuthenticationProvider {
         PreSocialLoginToken preAuthToken = (PreSocialLoginToken) authentication;
         SocialProperty socialProperty = preAuthToken.getSocialProperty();
 
-        Account account = accountRepository.findBySocialIdAndProviderInfo(socialProperty.getSocialId(), preAuthToken.getProvider())
-                .orElseGet(() -> accountRepository.save(new Account(socialProperty.getName(), getBasicRole(), preAuthToken.getProvider(), socialProperty.getSocialId())));
-
+        Account account = accountRepository.findBySocialIdAndProviderName(socialProperty.getSocialId(), preAuthToken.getProviderName())
+                .orElseGet(() -> accountRepository.save(new Account(socialProperty.getName(), getBasicRole(), preAuthToken.getProviderName(), socialProperty.getSocialId())));
         return PostLoginToken.fromAccount(account);
     }
 

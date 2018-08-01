@@ -1,13 +1,14 @@
 package rentroomer.roomreview.security.filters;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
-import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
-import org.springframework.security.web.util.matcher.RequestMatcher;
 import rentroomer.roomreview.exceptions.JWTNotFoundException;
+import rentroomer.roomreview.security.handlers.JWTAuthenticationSuccessHandler;
 import rentroomer.roomreview.security.support.JWTCookieManager;
+import rentroomer.roomreview.security.support.JWTSkipMatcher;
 import rentroomer.roomreview.security.tokens.PreJWTLoginToken;
 
 import javax.servlet.FilterChain;
@@ -15,19 +16,21 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-
+import java.util.Arrays;
 
 public class JWTAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
 
-    private AuthenticationSuccessHandler successHandler;
+    @Autowired
+    private JWTAuthenticationSuccessHandler successHandler;
+
+    @Autowired
     private AuthenticationFailureHandler failureHandler;
+
+    @Autowired
     private JWTCookieManager cookieManager;
 
-    public JWTAuthenticationFilter(RequestMatcher matcher, AuthenticationSuccessHandler successHandler, AuthenticationFailureHandler failureHandler, JWTCookieManager cookieManager) {
-        super(matcher);
-        this.successHandler = successHandler;
-        this.failureHandler = failureHandler;
-        this.cookieManager = cookieManager;
+    public JWTAuthenticationFilter() {
+        super(new JWTSkipMatcher("/**", Arrays.asList("/login", "/oauth")));
     }
 
     @Override

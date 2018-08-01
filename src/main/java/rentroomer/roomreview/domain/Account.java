@@ -1,7 +1,6 @@
 package rentroomer.roomreview.domain;
 
 import org.springframework.security.core.GrantedAuthority;
-import rentroomer.roomreview.security.OAuthProviderInfo;
 import rentroomer.roomreview.security.UserRole;
 
 import javax.persistence.Entity;
@@ -18,8 +17,7 @@ public class Account extends AbstractEntity {
     @Enumerated(EnumType.STRING)
     private UserRole userRole;
 
-    @Enumerated(EnumType.STRING)
-    private OAuthProviderInfo providerInfo;
+    private String providerName;
 
     private Long socialId;
 
@@ -29,10 +27,10 @@ public class Account extends AbstractEntity {
         this.userRole = userRole;
     }
 
-    public Account(String name, UserRole userRole, OAuthProviderInfo providerInfo, Long socialId) {
+    public Account(String name, UserRole userRole, String providerName, Long socialId) {
         this.userId = name;
         this.userRole = userRole;
-        this.providerInfo = providerInfo;
+        this.providerName = providerName;
         this.socialId = socialId;
     }
 
