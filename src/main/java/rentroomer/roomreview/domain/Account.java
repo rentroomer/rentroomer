@@ -4,28 +4,29 @@ import org.springframework.security.core.GrantedAuthority;
 import rentroomer.roomreview.security.OAuthProviderInfo;
 import rentroomer.roomreview.security.UserRole;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import java.util.Collection;
 import java.util.Collections;
 
 @Entity
-public class Account {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class Account extends AbstractEntity {
 
     private String userId;
 
     @Enumerated(EnumType.STRING)
     private UserRole userRole;
 
-    @Enumerated
+    @Enumerated(EnumType.STRING)
     private OAuthProviderInfo providerInfo;
 
     private Long socialId;
 
-    public Account() {
+    public Account(long id, String userId, UserRole userRole) {
+        super(id);
+        this.userId = userId;
+        this.userRole = userRole;
     }
 
     public Account(String name, UserRole userRole, OAuthProviderInfo providerInfo, Long socialId) {
@@ -35,14 +36,8 @@ public class Account {
         this.socialId = socialId;
     }
 
-    public Account(long id, String userId, UserRole userRole) {
-        this.id = id;
-        this.userId = userId;
-        this.userRole = userRole;
-    }
-
     public Long getId() {
-        return id;
+        return super.getId();
     }
 
     public String getUserId() {
