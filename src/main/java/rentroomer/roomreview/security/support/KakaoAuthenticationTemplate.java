@@ -7,7 +7,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import rentroomer.roomreview.dto.SocialProperty;
 import rentroomer.roomreview.security.oauth.ServiceProvider;
-import rentroomer.roomreview.security.tokens.PreSocialLoginToken;
 
 @Component
 public class KakaoAuthenticationTemplate implements SocialAuthenticationTemplate {

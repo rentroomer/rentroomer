@@ -30,7 +30,7 @@ public class JWTAuthenticationFilter extends AbstractAuthenticationProcessingFil
     private JWTCookieManager cookieManager;
 
     public JWTAuthenticationFilter() {
-        super(new JWTSkipMatcher("/**", Arrays.asList("/login", "/oauth", "/h2-console/**", "/js/**", "/css/**", "/favicon.ico")));
+        super(new JWTSkipMatcher("/**", Arrays.asList("/login", "/oauth", "/h2-console/**", "/js/**", "/css/**", "/favicon.ico", "/reviews/form")));
     }
 
     @Override

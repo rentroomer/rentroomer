@@ -10,6 +10,7 @@ import java.util.Arrays;
 import java.util.Optional;
 
 @Component
+
 public class JWTCookieManager {
     private static final String COOKIE_NAME_AUTH = "Auth";
 

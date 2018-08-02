@@ -53,4 +53,14 @@ public class Account extends AbstractEntity {
     public Collection<? extends GrantedAuthority> getAuthorityNames() {
         return Collections.singletonList(userRole);
     }
+
+    @Override
+    public String toString() {
+        return "Account{" +
+                "userId='" + userId + '\'' +
+                ", userRole=" + userRole +
+                ", providerName='" + providerName + '\'' +
+                ", socialId=" + socialId +
+                '}';
+    }
 }
