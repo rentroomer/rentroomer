@@ -15,9 +15,12 @@ import rentroomer.roomreview.security.filters.JWTAuthenticationFilter;
 import rentroomer.roomreview.security.filters.SocialLoginFilter;
 import rentroomer.roomreview.security.providers.JWTAuthenticationProvider;
 import rentroomer.roomreview.security.providers.SocialLoginProvider;
+import rentroomer.roomreview.security.support.JWTSkipMatcher;
+
+import java.util.Arrays;
 
 @Configuration
-@EnableWebSecurity(debug = true)
+@EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
@@ -46,18 +49,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.NEVER);
         http.csrf().disable();
         http.headers().frameOptions().disable();
-        /*http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);*/
         http.addFilterBefore(socialLoginFilter(), UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
     }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.authenticationProvider(socialLoginProvider);
         auth.authenticationProvider(jwtAuthenticationProvider);
-    }
-
-    @Override
-    public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers("/login", "/oauth", "/h2-console/**", "/js/**", "/css/**", "/favicon.ico", "/reviews/form");
     }
 }

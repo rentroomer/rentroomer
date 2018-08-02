@@ -5,6 +5,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
+import org.springframework.security.web.util.matcher.RequestMatcher;
 import rentroomer.roomreview.exceptions.JWTNotFoundException;
 import rentroomer.roomreview.security.handlers.JWTAuthenticationSuccessHandler;
 import rentroomer.roomreview.security.support.JWTCookieManager;
@@ -31,7 +32,7 @@ public class JWTAuthenticationFilter extends AbstractAuthenticationProcessingFil
     private JWTCookieManager cookieManager;
 
     public JWTAuthenticationFilter() {
-        super(new JWTSkipMatcher("/**", Arrays.asList("/oauth", "/h2-console/**", "/js/**", "/css/**", "/favicon.ico", "/reviews/form")));
+        super(new JWTSkipMatcher(Arrays.asList("/")));
     }
 
     @Override

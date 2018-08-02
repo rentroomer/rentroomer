@@ -10,16 +10,14 @@ import java.util.List;
 import static java.util.stream.Collectors.toList;
 
 public class JWTSkipMatcher implements RequestMatcher {
-    private RequestMatcher matcher;
     private OrRequestMatcher orRequestMatcher;
 
-    public JWTSkipMatcher(String processingPath, List<String> skipPath) {
-        matcher = new AntPathRequestMatcher(processingPath);
+    public JWTSkipMatcher(List<String> skipPath) {
         orRequestMatcher = new OrRequestMatcher(skipPath.stream().map(AntPathRequestMatcher::new).collect(toList()));
     }
 
     @Override
     public boolean matches(HttpServletRequest request) {
-        return matcher.matches(request) && !orRequestMatcher.matches(request);
+        return orRequestMatcher.matches(request);
     }
 }
