@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Collections;
 
 public class JWTAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
 
@@ -30,7 +31,7 @@ public class JWTAuthenticationFilter extends AbstractAuthenticationProcessingFil
     private JWTCookieManager cookieManager;
 
     public JWTAuthenticationFilter() {
-        super(new JWTSkipMatcher("/**", Arrays.asList("/login", "/oauth", "/h2-console/**", "/js/**", "/css/**", "/favicon.ico", "/reviews/form")));
+        super(new JWTSkipMatcher("/**", Arrays.asList("/oauth", "/h2-console/**", "/js/**", "/css/**", "/favicon.ico", "/reviews/form")));
     }
 
     @Override

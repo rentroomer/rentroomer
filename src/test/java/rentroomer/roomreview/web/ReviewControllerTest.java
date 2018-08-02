@@ -8,8 +8,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -60,6 +58,9 @@ public class ReviewControllerTest {
     @Test
     public void create_AUTHORIZED() {
         builder.addHeader("Cookie", "Auth=" + jwt);
+        builder.addParam("cost", 60);
+        builder.addParam("deposit", 1000);
+        builder.addParam("structure", "원룸");
         ResponseEntity<String> response = template.postForEntity("/reviews/", builder.build(), String.class);
         assertThat(response.getStatusCode(), is(HttpStatus.FOUND));
         logger.debug(response.getBody());

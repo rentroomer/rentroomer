@@ -6,11 +6,18 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
 public class RequestBuilder {
-
     private MultiValueMap<String, String> headers;
+    private MultiValueMap<String, Object> params;
+
 
     public RequestBuilder() {
         headers = new LinkedMultiValueMap<>();
+        params = new LinkedMultiValueMap<>();
+    }
+
+    public RequestBuilder addParam(String key, Object value) {
+        params.add(key, value);
+        return this;
     }
 
     public RequestBuilder addHeader(String key, String value) {
@@ -18,9 +25,9 @@ public class RequestBuilder {
         return this;
     }
 
-    public HttpEntity<String> build() {
+    public HttpEntity<MultiValueMap<String, Object>> build() {
         HttpHeaders header = new HttpHeaders();
         header.addAll(headers);
-        return new HttpEntity<>(header);
+        return new HttpEntity<>(params, header);
     }
 }
